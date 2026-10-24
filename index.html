@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Quest Board</title>
+<style>
+  :root {
+    --wood: #3b2616;
+    --wood-light: #5a3a22;
+    --parchment: #f1e3bf;
+    --parchment-edge: #d9c28a;
+    --ink: #2b1d10;
+    --gold: #b8860b;
+    --red: #8b1e1e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--ink);
+    background: repeating-linear-gradient(90deg, var(--wood) 0 38px, var(--wood-light) 38px 40px);
+    padding: 24px 16px 48px;
+  }
+  header { text-align: center; color: var(--parchment); margin-bottom: 28px; }
+  header h1 { margin: 0; font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: 2px; text-shadow: 2px 2px 0 #000; }
+  header p { margin: 6px 0 0; font-style: italic; opacity: .85; }
+  .board {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 26px;
+  }
+  .quest {
+    position: relative;
+    background: var(--parchment);
+    border: 2px solid var(--parchment-edge);
+    border-radius: 3px;
+    padding: 26px 20px 18px;
+    box-shadow: 3px 5px 10px rgba(0,0,0,.5);
+    display: flex;
+    flex-direction: column;
+  }
+  .quest:nth-child(odd)  { transform: rotate(-1deg); }
+  .quest:nth-child(even) { transform: rotate(1deg); }
+  .quest::before {
+    content: "";
+    position: absolute; top: 8px; left: 50%;
+    width: 14px; height: 14px; margin-left: -7px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 1px 2px 3px rgba(0,0,0,.5);
+  }
+  .quest h2 { margin: 0 0 4px; font-size: 1.25rem; text-align: center; }
+  .label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1.5px; color: #6b5535; margin-top: 12px; }
+  .poster { font-weight: bold; }
+  .task { line-height: 1.45; flex: 1; }
+  .reward {
+    margin-top: 16px; padding-top: 10px;
+    border-top: 1px dashed var(--parchment-edge);
+    text-align: center; font-size: 1.3rem; font-weight: bold; color: var(--gold);
+  }
+  .empty { grid-column: 1 / -1; text-align: center; color: var(--parchment); font-style: italic; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚔ The Quest Board ⚔</h1>
+  <p>Honest work for honest coin</p>
+</header>
+
+<main class="board" id="board"></main>
+
+<script>
+  /* =====================================================================
+     ADD YOUR QUESTS HERE
+     Copy one { ... } block, paste it below the last one (keep the comma),
+     and fill in the three fields:
+       poster : who posted the quest / who is paying
+       task   : what the job entails
+       gold   : how much gold they are paying (a number)
+     "title" is an optional name for the quest card.
+     ===================================================================== */
+  const QUESTS = [
+    {
+      title: "Rats in the Cellar",
+      poster: "Marta, Innkeeper of the Rusty Flagon",
+      task: "Something large is gnawing through my ale barrels. Clear out the cellar and find out what it is.",
+      gold: 50
+    },
+    {
+      title: "Escort to Highmere",
+      poster: "Brother Alden",
+      task: "Guard a wagon of temple supplies along the old road. Bandits have been sighted near the ford.",
+      gold: 120
+    },
+    {
+      title: "The Missing Heirloom",
+      poster: "Lady Corvane",
+      task: "A silver locket was stolen from my estate. Return it quietly, and no questions will be asked.",
+      gold: 300
+    }
+    // ← add new quests above this line
+  ];
+  /* ===================== END OF QUEST SECTION ===================== */
+
+  const board = document.getElementById("board");
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  if (QUESTS.length === 0) {
+    board.appendChild(el("p", "empty", "The board is bare. No quests posted yet."));
+  }
+
+  QUESTS.forEach((q) => {
+    const card = el("article", "quest");
+    card.appendChild(el("h2", "", q.title || "Untitled Quest"));
+    card.appendChild(el("div", "label", "Posted by"));
+    card.appendChild(el("div", "poster", q.poster));
+    card.appendChild(el("div", "label", "The task"));
+    card.appendChild(el("div", "task", q.task));
+    card.appendChild(el("div", "reward", "🪙 " + Number(q.gold).toLocaleString() + " gold"));
+    board.appendChild(card);
+  });
+</script>
+</body>
+</html>
