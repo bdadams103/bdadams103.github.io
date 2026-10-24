@@ -75,15 +75,7 @@
 <main class="board" id="board"></main>
 
 <script>
-  /* =====================================================================
-     ADD YOUR QUESTS HERE
-     Copy one { ... } block, paste it below the last one (keep the comma),
-     and fill in the three fields:
-       poster : who posted the quest / who is paying
-       task   : what the job entails
-       gold   : how much gold they are paying (a number)
-     "title" is an optional name for the quest card.
-     ===================================================================== */
+
   const QUESTS = [
     {
       title: "Rats in the Cellar",
@@ -109,9 +101,7 @@
       task: "The Stadium is always looking for fresh faces to compete. A nominal sum will be provided for victors! Base pay is 100 gold per bout.",
       gold: 100
     }
-    // ← add new quests above this line
   ];
-  /* ===================== END OF QUEST SECTION ===================== */
 
   const board = document.getElementById("board");
 
@@ -123,7 +113,7 @@
   }
 
   if (QUESTS.length === 0) {
-    board.appendChild(el("p", "empty", "The board is bare. No quests posted yet."));
+    board.appendChild(el("p", "empty", "The board is empty. No quests posted yet."));
   }
 
   QUESTS.forEach((q) => {
